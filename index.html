@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>過電流チェック教材</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background-color: #f7f9fa;
+      line-height: 1.6;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    section {
+      background: #fff;
+      padding: 1rem 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    /* --- 例題の画像表示 --- */
+    .example-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .example-item img {
+      width: 75px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: white;
+      padding: 4px;
+    }
+
+    /* --- 練習問題 --- */
+    .device, .total-input {
+      display: grid;
+      grid-template-columns: 80px 1fr 1fr 1fr;
+      gap: 0.5rem;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      padding: 0.5rem;
+      background: #fefefe;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    .device img {
+      width: 70px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      background: white;
+      padding: 3px;
+    }
+
+    .header {
+      font-weight: bold;
+      text-align: center;
+    }
+
+    input {
+      text-align: center;
+      padding: 0.35rem;
+      border-radius: 6px;
+      border: 1px solid #aaa;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 0.6rem 1.2rem;
+      margin-right: 0.5rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .blue {
+      background-color: #3b82f6;
+      color: white;
+    }
+
+    .gray {
+      background-color: #e5e7eb;
+    }
+
+    .shadow {
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .text-green { color: green; font-weight: bold; }
+  </style>
+</head>
+
+<body>
+  <h1>過電流チェック教材</h1>
+
+  <!-- ========================= -->
+  <!--        例題セクション      -->
+  <!-- ========================= -->
+  <section>
+    <h2>📘 例題</h2>
+    <p>次の機器をテーブルタップに接続したとき、過電流になるか調べましょう。</p>
+
+    <div class="example-item">
+      <img src="hair_drier.png" alt="ドライヤー">
+      <span>ドライヤー：1200W</span>
+    </div>
+
+    <div class="example-item">
+      <img src="smartphone_juuden.png" alt="スマホ充電器">
+      <span>スマホ充電器：20W</span>
+    </div>
+
+    <p>
+      【計算のしかた】<br>
+      ドライヤー：1200W ÷ 100V ＝ <strong>12A</strong><br>
+      スマホ充電器：20W ÷ 100V ＝ <strong>0.20A</strong><br>
+      合計電流＝12A ＋ 0.20A ＝ <strong>12.20A</strong>
+    </p>
+
+    <p class="text-green">✔ 定格内（15Aまで）</p>
+  </section>
+
+  <!-- ========================= -->
+  <!--      練習問題セクション     -->
+  <!-- ========================= -->
+  <section>
+    <h2>✏ 練習問題</h2>
+    <p><strong>※ テーブルタップの定格は 15A（＝1500W）です。</strong></p>
+
+    <div class="header device" style="grid-template-columns:80px 1fr 1fr 1fr;">
+      <div>画像</div>
+      <div>機器名</div>
+      <div>消費電力(W)</div>
+      <div>電流(A)</div>
+    </div>
+
+    <!-- Device 1 -->
+    <div class="device">
+      <img id="dev1-img" src="cooking_microwave.png">
+      <div id="dev1-name">電子レンジ</div>
+      <div id="dev1-watt">1000</div>
+      <input type="number" id="dev1-current" step="0.01">
+    </div>
+
+    <!-- Device 2 -->
+    <div class="device">
+      <img id="dev2-img" src="kaden_tv_wide_frame.png">
+      <div id="dev2-name">テレビ</div>
+      <div id="dev2-watt">150</div>
+      <input type="number" id="dev2-current" step="0.01">
+    </div>
+
+    <div class="total-input" style="grid-template-columns: 80px 1fr 1fr 1fr;">
+      <div></div>
+      <div class="header" style="grid-column: span 2; text-align:right;">合計電流(A)</div>
+      <input type="number" id="total-current" step="0.01">
+    </div>
+
+    <button class="blue shadow" onclick="grade()">採点する</button>
+    <button class="gray shadow" onclick="regenerate()">問題を更新</button>
+
+    <p id="score"></p>
+    <div id="answer" style="margin-top:1rem;"></div>
+  </section>
+
+  <!-- ========================= -->
+  <!--       JavaScript          -->
+  <!-- ========================= -->
+  <script>
+    const VOLTAGE = 100;
+
+    const deviceImages = {
+      "電子レンジ": "cooking_microwave.png",
+      "テレビ": "kaden_tv_wide_frame.png",
+      "炊飯器": "cooking_suihanki.png",
+      "ポット": "cooking_denki_pot.png",
+      "PC": "kaden_laptop.png",
+      "ゲーム機": "portable_game.png",
+      "スマホ充電器": "smartphone_juuden.png"
+    };
+
+    function grade() {
+      const v1 = parseFloat(document.getElementById("dev1-current").value);
+      const v2 = parseFloat(document.getElementById("dev2-current").value);
+      const vt = parseFloat(document.getElementById("total-current").value);
+
+      const w1 = parseFloat(document.getElementById("dev1-watt").innerText) / VOLTAGE;
+      const w2 = parseFloat(document.getElementById("dev2-watt").innerText) / VOLTAGE;
+      const total = w1 + w2;
+
+      let score = 0;
+      if (!isNaN(v1) && v1.toFixed(2) == w1.toFixed(2)) score++;
+      if (!isNaN(v2) && v2.toFixed(2) == w2.toFixed(2)) score++;
+      if (!isNaN(vt) && vt.toFixed(2) == total.toFixed(2)) score++;
+
+      document.getElementById("score").innerText = `あなたの得点：${score} / 3`;
+
+      document.getElementById("answer").innerHTML = `
+        <p><strong>正解（参考）</strong></p>
+        <ul>
+          <li>${document.getElementById("dev1-name").innerText} = ${w1.toFixed(2)}A</li>
+          <li>${document.getElementById("dev2-name").innerText} = ${w2.toFixed(2)}A</li>
+        </ul>
+        <p>合計 = ${total.toFixed(2)}A（15Aまで）</p>
+      `;
+    }
+
+    function regenerate() {
+      const devices = [
+        {name:"電子レンジ", watt:1000},
+        {name:"テレビ", watt:150},
+        {name:"炊飯器", watt:700},
+        {name:"ポット", watt:800},
+        {name:"PC", watt:200},
+        {name:"ゲーム機", watt:120},
+        {name:"スマホ充電器", watt:20}
+      ];
+
+      devices.sort(() => Math.random() - 0.5);
+
+      // Device 1
+      document.getElementById("dev1-name").innerText = devices[0].name;
+      document.getElementById("dev1-watt").innerText = devices[0].watt;
+      document.getElementById("dev1-img").src = deviceImages[devices[0].name];
+
+      // Device 2
+      document.getElementById("dev2-name").innerText = devices[1].name;
+      document.getElementById("dev2-watt").innerText = devices[1].watt;
+      document.getElementById("dev2-img").src = deviceImages[devices[1].name];
+
+      // reset
+      document.getElementById("dev1-current").value = "";
+      document.getElementById("dev2-current").value = "";
+      document.getElementById("total-current").value = "";
+      document.getElementById("score").innerText = "";
+      document.getElementById("answer").innerHTML = "";
+    }
+  </script>
+</body>
+</html>

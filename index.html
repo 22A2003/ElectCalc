@@ -2,10 +2,10 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>過電流チェック教材</title>
+  <title>電気機器の安全な使い方</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: "Segoe UI", Arial, sans-serif;
       max-width: 900px;
       margin: 2rem auto;
       padding: 1rem;
@@ -13,20 +13,16 @@
       line-height: 1.6;
     }
 
-    h1 {
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
+    h1 { text-align: center; }
 
     section {
       background: #fff;
-      padding: 1rem 1.5rem;
-      margin-bottom: 1.5rem;
+      padding: 1.5rem;
       border-radius: 10px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
     }
 
-    /* --- 例題の画像表示 --- */
     .example-item {
       display: flex;
       align-items: center;
@@ -42,7 +38,6 @@
       padding: 4px;
     }
 
-    /* --- 練習問題 --- */
     .device, .total-input {
       display: grid;
       grid-template-columns: 80px 1fr 1fr 1fr;
@@ -66,9 +61,11 @@
     .header {
       font-weight: bold;
       text-align: center;
+      background: #f3f4f6;
+      border-radius: 6px;
     }
 
-    input {
+    input, select {
       text-align: center;
       padding: 0.35rem;
       border-radius: 6px;
@@ -85,36 +82,25 @@
       font-size: 1rem;
     }
 
-    .blue {
-      background-color: #3b82f6;
-      color: white;
-    }
-
-    .gray {
-      background-color: #e5e7eb;
-    }
-
-    .shadow {
-      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-    }
-
+    .blue { background-color: #3b82f6; color: white; }
+    .gray { background-color: #e5e7eb; }
+    .shadow { box-shadow: 2px 2px 5px rgba(0,0,0,0.2); }
     .text-green { color: green; font-weight: bold; }
+    .text-red { color: red; font-weight: bold; }
   </style>
 </head>
 
 <body>
-  <h1>過電流チェック教材</h1>
+  <h1>電気機器の安全な使い方</h1>
 
-  <!-- ========================= -->
-  <!--        例題セクション      -->
-  <!-- ========================= -->
+  <!-- ================== 例題 ================== -->
   <section>
     <h2>📘 例題</h2>
-    <p>次の機器をテーブルタップに接続したとき、過電流になるか調べましょう。</p>
-
+<p>次の機器をテーブルタップに接続したとき、安全な使い方なのか調べましょう。</p>
+<p>※なお、テーブルタップの定格電流が15A,供給される電圧は100Vです。</p>
     <div class="example-item">
-      <img src="hair_drier.png" alt="ドライヤー">
-      <span>ドライヤー：1200W</span>
+      <img src="hair_drier.png" alt="ドライヤ">
+      <span>ドライヤ：1200W</span>
     </div>
 
     <div class="example-item">
@@ -124,29 +110,23 @@
 
     <p>
       【計算のしかた】<br>
-      ドライヤー：1200W ÷ 100V ＝ <strong>12A</strong><br>
+      ドライヤ：1200W ÷ 100V ＝ <strong>12A</strong><br>
       スマホ充電器：20W ÷ 100V ＝ <strong>0.20A</strong><br>
       合計電流＝12A ＋ 0.20A ＝ <strong>12.20A</strong>
     </p>
 
-    <p class="text-green">✔ 定格内（15Aまで）</p>
+    <p class="text-green">✔ 定格電流内だから安全な使い方</p>
   </section>
 
-  <!-- ========================= -->
-  <!--      練習問題セクション     -->
-  <!-- ========================= -->
+  <!-- ================== 練習問題1 ================== -->
   <section>
-    <h2>✏ 練習問題</h2>
-    <p><strong>※ テーブルタップの定格は 15A（＝1500W）です。</strong></p>
+    <h2>✏ 練習問題1（2つの家電）</h2>
+    <p><strong>※ テーブルタップの定格電流が15A,供給される電圧は100Vです。</strong></p>
 
-    <div class="header device" style="grid-template-columns:80px 1fr 1fr 1fr;">
-      <div>画像</div>
-      <div>機器名</div>
-      <div>消費電力(W)</div>
-      <div>電流(A)</div>
+    <div class="header device">
+      <div>画像</div><div>機器名</div><div>消費電力(W)</div><div>電流(A)</div>
     </div>
 
-    <!-- Device 1 -->
     <div class="device">
       <img id="dev1-img" src="cooking_microwave.png">
       <div id="dev1-name">電子レンジ</div>
@@ -154,7 +134,6 @@
       <input type="number" id="dev1-current" step="0.01">
     </div>
 
-    <!-- Device 2 -->
     <div class="device">
       <img id="dev2-img" src="kaden_tv_wide_frame.png">
       <div id="dev2-name">テレビ</div>
@@ -162,24 +141,68 @@
       <input type="number" id="dev2-current" step="0.01">
     </div>
 
-    <div class="total-input" style="grid-template-columns: 80px 1fr 1fr 1fr;">
+    <div class="total-input">
       <div></div>
       <div class="header" style="grid-column: span 2; text-align:right;">合計電流(A)</div>
       <input type="number" id="total-current" step="0.01">
     </div>
 
-    <button class="blue shadow" onclick="grade()">採点する</button>
-    <button class="gray shadow" onclick="regenerate()">問題を更新</button>
+    <div style="margin-top:0.5rem;">
+      <label>安全性の判断：
+        <select id="safe1">
+          <option value="">選択してください</option>
+          <option value="safe">安全な使い方</option>
+          <option value="danger">危険な使い方</option>
+        </select>
+      </label>
+    </div>
 
-    <p id="score"></p>
-    <div id="answer" style="margin-top:1rem;"></div>
+    <button class="blue shadow" onclick="grade1()">採点する</button>
+    <button class="gray shadow" onclick="regenerate1()">問題を更新</button>
+
+    <p id="score1" style="font-weight:bold;"></p>
+    <div id="answer1" style="margin-top:1rem;"></div>
   </section>
 
-  <!-- ========================= -->
-  <!--       JavaScript          -->
-  <!-- ========================= -->
+  <!-- ================== 練習問題2 ================== -->
+  <section>
+    <h2>✏ 練習問題2（3つの家電）</h2>
+    <p><strong>次の3つの家電を同時に使ったとき、安全な使い方なのか調べましょう。</strong></p>
+    <p>テーブルタップの定格電流が15A,供給される電圧は100Vです。</strong></p>
+
+    <div class="header device">
+      <div>画像</div><div>機器名</div><div>消費電力(W)</div><div>電流(A)</div>
+    </div>
+
+    <div id="dev-area2"></div>
+
+    <div class="total-input">
+      <div></div>
+      <div class="header" style="grid-column: span 2; text-align:right;">合計電流(A)</div>
+      <input type="number" id="total-current2" step="0.01">
+    </div>
+
+    <div style="margin-top:0.5rem;">
+      <label>安全性の判断：
+        <select id="safe2">
+          <option value="">選択してください</option>
+          <option value="safe">安全な使い方</option>
+          <option value="danger">危険な使い方</option>
+        </select>
+      </label>
+    </div>
+
+    <button class="blue shadow" onclick="grade2()">採点する</button>
+    <button class="gray shadow" onclick="regenerate2()">問題を更新</button>
+
+    <p id="score2" style="font-weight:bold; margin-top:1rem;"></p>
+    <div id="answer2" style="margin-top:1rem;"></div>
+  </section>
+
+  <!-- ================== JavaScript ================== -->
   <script>
     const VOLTAGE = 100;
+    const SAFE_LIMIT = 15;
 
     const deviceImages = {
       "電子レンジ": "cooking_microwave.png",
@@ -188,65 +211,123 @@
       "ポット": "cooking_denki_pot.png",
       "PC": "kaden_laptop.png",
       "ゲーム機": "portable_game.png",
-      "スマホ充電器": "smartphone_juuden.png"
+      "スマホ充電器": "smartphone_juuden.png",
+      "ラジオ": "rajio.jpg",
+      "冷蔵庫": "reizoukojpg.jpg",
+      "扇風機": "sennpuuki.jpg"
     };
 
-    function grade() {
-      const v1 = parseFloat(document.getElementById("dev1-current").value);
-      const v2 = parseFloat(document.getElementById("dev2-current").value);
-      const vt = parseFloat(document.getElementById("total-current").value);
+    const allDevices = [
+      { name: "電子レンジ", watt: 1000 },
+      { name: "テレビ", watt: 150 },
+      { name: "炊飯器", watt: 700 },
+      { name: "ポット", watt: 800 },
+      { name: "PC", watt: 200 },
+      { name: "ゲーム機", watt: 120 },
+      { name: "スマホ充電器", watt: 20 },
+      { name: "ラジオ", watt: 40 },
+      { name: "冷蔵庫", watt: 150 },
+      { name: "扇風機", watt: 60 }
+    ];
 
-      const w1 = parseFloat(document.getElementById("dev1-watt").innerText) / VOLTAGE;
-      const w2 = parseFloat(document.getElementById("dev2-watt").innerText) / VOLTAGE;
-      const total = w1 + w2;
-
-      let score = 0;
-      if (!isNaN(v1) && v1.toFixed(2) == w1.toFixed(2)) score++;
-      if (!isNaN(v2) && v2.toFixed(2) == w2.toFixed(2)) score++;
-      if (!isNaN(vt) && vt.toFixed(2) == total.toFixed(2)) score++;
-
-      document.getElementById("score").innerText = `あなたの得点：${score} / 3`;
-
-      document.getElementById("answer").innerHTML = `
-        <p><strong>正解（参考）</strong></p>
-        <ul>
-          <li>${document.getElementById("dev1-name").innerText} = ${w1.toFixed(2)}A</li>
-          <li>${document.getElementById("dev2-name").innerText} = ${w2.toFixed(2)}A</li>
-        </ul>
-        <p>合計 = ${total.toFixed(2)}A（15Aまで）</p>
-      `;
-    }
-
-    function regenerate() {
-      const devices = [
-        {name:"電子レンジ", watt:1000},
-        {name:"テレビ", watt:150},
-        {name:"炊飯器", watt:700},
-        {name:"ポット", watt:800},
-        {name:"PC", watt:200},
-        {name:"ゲーム機", watt:120},
-        {name:"スマホ充電器", watt:20}
-      ];
-
-      devices.sort(() => Math.random() - 0.5);
-
-      // Device 1
+    // ========= 練習問題1 =========
+    function regenerate1() {
+      const devices = [...allDevices].sort(() => Math.random() - 0.5).slice(0, 2);
       document.getElementById("dev1-name").innerText = devices[0].name;
       document.getElementById("dev1-watt").innerText = devices[0].watt;
       document.getElementById("dev1-img").src = deviceImages[devices[0].name];
-
-      // Device 2
       document.getElementById("dev2-name").innerText = devices[1].name;
       document.getElementById("dev2-watt").innerText = devices[1].watt;
       document.getElementById("dev2-img").src = deviceImages[devices[1].name];
-
-      // reset
-      document.getElementById("dev1-current").value = "";
-      document.getElementById("dev2-current").value = "";
-      document.getElementById("total-current").value = "";
-      document.getElementById("score").innerText = "";
-      document.getElementById("answer").innerHTML = "";
+      ["dev1-current","dev2-current","total-current"].forEach(id => document.getElementById(id).value = "");
+      document.getElementById("safe1").value = "";
+      document.getElementById("score1").innerText = "";
+      document.getElementById("answer1").innerHTML = "";
     }
+
+    function grade1() {
+      const w1 = parseFloat(document.getElementById("dev1-watt").innerText);
+      const w2 = parseFloat(document.getElementById("dev2-watt").innerText);
+      const c1 = w1 / VOLTAGE, c2 = w2 / VOLTAGE, total = c1 + c2;
+      const user1 = parseFloat(document.getElementById("dev1-current").value);
+      const user2 = parseFloat(document.getElementById("dev2-current").value);
+      const userTotal = parseFloat(document.getElementById("total-current").value);
+      const userSafe = document.getElementById("safe1").value;
+
+      let score = 0;
+      if (user1?.toFixed(2) == c1.toFixed(2)) score += 2;
+      if (user2?.toFixed(2) == c2.toFixed(2)) score += 2;
+      if (userTotal?.toFixed(2) == total.toFixed(2)) score++;
+      const correctSafety = total <= SAFE_LIMIT ? "safe" : "danger";
+      if (userSafe === correctSafety) score++;
+
+      document.getElementById("score1").innerText = `あなたの得点：${score} / 6点`;
+      document.getElementById("answer1").innerHTML = `
+        <p><strong>正解</strong></p>
+        <ul>
+          <li>${document.getElementById("dev1-name").innerText} = ${c1.toFixed(2)}A</li>
+          <li>${document.getElementById("dev2-name").innerText} = ${c2.toFixed(2)}A</li>
+        </ul>
+        <p>合計 = ${total.toFixed(2)}A（15Aまで）<br>${
+          total <= SAFE_LIMIT ? '<span class="text-green">安全な使い方です</span>' : '<span class="text-red">危険な使い方です！</span>'
+        }</p>`;
+    }
+
+    // ========= 練習問題2 =========
+    function regenerate2() {
+      const d = [...allDevices].sort(() => Math.random() - 0.5).slice(0, 3);
+      const area = document.getElementById("dev-area2");
+      area.innerHTML = "";
+      d.forEach((item, i) => {
+        area.innerHTML += `
+          <div class="device">
+            <img src="${deviceImages[item.name]}" alt="${item.name}">
+            <div>${item.name}</div>
+            <div>${item.watt}</div>
+            <input type="number" id="curr-${i}" step="0.01" placeholder="A">
+          </div>`;
+      });
+      area.dataset.devices = JSON.stringify(d);
+      document.getElementById("total-current2").value = "";
+      document.getElementById("safe2").value = "";
+      document.getElementById("score2").innerText = "";
+      document.getElementById("answer2").innerHTML = "";
+    }
+
+    function grade2() {
+      const devices = JSON.parse(document.getElementById("dev-area2").dataset.devices);
+      const correctCurrents = devices.map(d => d.watt / VOLTAGE);
+      const totalCorrect = correctCurrents.reduce((a,b)=>a+b,0);
+      const userTotal = parseFloat(document.getElementById("total-current2").value);
+      const userSafety = document.getElementById("safe2").value;
+
+      let score = 0;
+      let feedback = "<p><strong>正解（参考）</strong></p><ul>";
+
+      devices.forEach((d, i) => {
+        const userVal = parseFloat(document.getElementById(`curr-${i}`).value);
+        const isCorrect = !isNaN(userVal) && userVal.toFixed(2) == correctCurrents[i].toFixed(2);
+        if (isCorrect) score += 2;
+        feedback += `<li>${d.name} = ${correctCurrents[i].toFixed(2)}A ${isCorrect ? "✅" : "❌"}</li>`;
+      });
+      feedback += "</ul>";
+
+      if (!isNaN(userTotal) && userTotal.toFixed(2) == totalCorrect.toFixed(2)) score++;
+      const correctSafety = totalCorrect <= SAFE_LIMIT ? "safe" : "danger";
+      if (userSafety === correctSafety) score++;
+
+      document.getElementById("score2").innerText = `あなたの得点：${score} / 8点`;
+      feedback += `<p>合計 = ${totalCorrect.toFixed(2)}A（15Aまで）<br>${
+        totalCorrect <= SAFE_LIMIT
+          ? '<span class="text-green">安全な使い方です</span>'
+          : '<span class="text-red">危険な使い方です！</span>'
+      }</p>`;
+      document.getElementById("answer2").innerHTML = feedback;
+    }
+
+    regenerate1();
+    regenerate2();
   </script>
 </body>
 </html>
+
